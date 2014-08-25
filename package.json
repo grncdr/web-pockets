@@ -1,0 +1,25 @@
+{
+  "name": "web-pockets",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Sugden <me@stephensugden.com>",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "pockets": "^0.2.0",
+    "concat-stream": "~1.4.5",
+    "msgpack": "~0.2.3"
+  },
+  "dependencies": {
+    "bops": "~0.1.1",
+    "collect-stream": "^1.0.0",
+    "concat-stream": "~1.4.5",
+    "lie": "^2.7.7",
+    "lie-denodify": "^0.3.0",
+    "routes": "~1.1.0",
+    "xtend": "~3.0.0"
+  }
+}
