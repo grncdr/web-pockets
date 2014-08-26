@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 });
 ```
 
-We assume that the "loadSession" middleware will attach a `session` property to the request. But what's "cookieParser" doing in there? I guess it's necessary so we can load the session data based on a special cookie value, so we need to make sure it's always included before `loadSession`. All of our middleware essentially share 1 global bag of variables (`request`), and need to be called in the right order for things to work, doesn't sound very composable to me.
+We assume that the "loadSession" middleware will attach a `session` property to the request. But what's "cookieParser" doing in there? We can _guess_ that it's necessary so we can load the session data based on a special cookie value, so we need to make sure it's always included before `loadSession`. All of our middleware essentially share 1 global bag of variables (`request`), and need to be called in the right order for things to work. Doesn't sound very composable to me.
 
 This implicit coupling makes not only the "high-level" organization of an app unnecessarily difficult to understand, it also complicates the individual pieces of application logic. For example, here's a _minimal_ implementation of "loadSession":
 
