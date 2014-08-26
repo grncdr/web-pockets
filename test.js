@@ -1,10 +1,10 @@
 // first create a generic "app" that responds to  messages
-var createHandler = require('./create-handler');
+var createHandler = require('./');
 
 // Create an application that takes in a message and produces a result
 var app = createHandler();
 
-app.route('(GET|POST|PUT|DELETE|HEAD|PATCH) /echo', function (request, requestBody) {
+app.route(':method /echo', function (request, requestBody) {
   return {
     body: {
       method: request.method,
