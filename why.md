@@ -71,7 +71,7 @@ Beyond middleware (and their limited `(req, res, next)` signature), the extensio
 
 On the other side of the spectrum are frameworks like Hapi, with elaborate (and over-engineered IMO) plugin APIs. Inevitably your needs will not quite mesh with the plugin interfaces exposed to you, and you end up writing more code to make a square peg fit a round hole.
 
-`web-pockets` addresses this by _being a service, not a framework_. The service it provides is ordering interdependant asynchronous operations, so you don't have to. On top of this service are included some _defaults_, but it is trivial to opt out of these or augment them using plain-old function composition.
+`web-pockets` addresses this by _being a service, not a framework_. The service it provides is ordering interdependant asynchronous operations, so you don't have to. On top of this service are included some _defaults_, but it is trivial to opt out of these or augment them using plain-old function composition. For examples of how you to extend and/or override `web-pockets` defaults, check out the [guide](guide.md).
 
 <a name="footnotes"></a>
 \* The defaults are **not** final. The question of how to best decompose them is very much open.
