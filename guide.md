@@ -76,7 +76,7 @@ In a larger application you may want to define `loadConfig` in a separate module
 
 ## Example 2 - Hit Counter
 
-For this example, we're going to create a hit counter app that tracks how even each URL is visited.
+For this example, we're going to create a hit counter app that tracks how often each URL is visited.
 
 First we implement the hit counter logic:
 
