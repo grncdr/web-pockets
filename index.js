@@ -5,7 +5,9 @@ var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
 var slice = Function.prototype.call.bind(Array.prototype.slice);
 
-module.exports = function createHandler (root) {
+module.exports = createHandler;
+
+function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
   addDefaults(appPocket, appDefaults);
 
@@ -18,7 +20,7 @@ module.exports = function createHandler (root) {
     rp.get('responder').then(rp.run)
       .catch(function (err) {
         rp.value('error', err);
-        return rp.get('errorHandler').then(rp.run)
+        return rp.get('errorHandler').then(rp.run);
       })
       .catch(function (err) {
         return defaults.errorHandler(err, response);
@@ -39,7 +41,7 @@ module.exports = function createHandler (root) {
   handler.requestValue = function () {
     perRequestValues.push(slice(arguments));
     return handler;
-  }
+  };
 
   var router = new Routes();
   handler.value('router', router);
@@ -58,7 +60,7 @@ module.exports = function createHandler (root) {
     if (names.length) {
       throw new TypeError(
         'Missing providers for ' +
-        names.map(function (n) { return '"' + n + '"' }).join(', ')
+        names.map(function (n) { return '"' + n + '"'; }).join(', ')
       );
     }
   };
@@ -71,14 +73,14 @@ module.exports = function createHandler (root) {
     handler.verify();
     var server = http.createServer(handler);
     return server.listen(port, host);
-  }
+  };
 
 
   handler.onError = function (errorHandler) {
     handler.value('errorHandler', function () {
       return errorHandler;
     });
-  }
+  };
 
   return handler;
 
@@ -88,12 +90,12 @@ module.exports = function createHandler (root) {
       rp.value.apply(rp, args);
     });
     rp.value('request', request)
-      .value('response', response)
+      .value('response', response);
 
     addDefaults(rp, requestDefaults);
     return rp;
   }
-};
+}
 
 function addDefaults (pocket, defaults) {
   for (var k in defaults) {
