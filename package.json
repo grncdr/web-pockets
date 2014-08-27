@@ -9,14 +9,16 @@
   "author": "Stephen Sugden <me@stephensugden.com>",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "pockets": "^0.2.0",
     "concat-stream": "~1.4.5",
-    "msgpack": "~0.2.3"
+    "msgpack": "~0.2.3",
+    "pockets": "^0.2.0",
+    "questor": "^1.0.0-alpha.3"
   },
   "dependencies": {
     "bops": "~0.1.1",
     "collect-stream": "^1.0.0",
     "concat-stream": "~1.4.5",
+    "cookies": "^0.5.0",
     "lie": "^2.7.7",
     "lie-denodify": "^0.3.0",
     "routes": "~1.1.0",

@@ -1,11 +1,13 @@
 var http = require('http');
 var Routes = require('routes');
 var pocket = require('pockets');
-var defaults = require('./defaults');
+var appDefaults = require('./app-defaults');
+var requestDefaults = require('./request-defaults');
 var slice = Function.prototype.call.bind(Array.prototype.slice);
 
 module.exports = function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
+  addDefaults(appPocket, appDefaults);
 
   var perRequestValues = [];
 
@@ -88,14 +90,16 @@ module.exports = function createHandler (root) {
     rp.value('request', request)
       .value('response', response)
 
-
-    for (var k in defaults) {
-      // add the default
-      rp.default(k, defaults[k]);
-      // store each defaults with a prefix so they can be used by overrides
-      rp.default('default' + k, defaults[k]);
-    }
-
+    addDefaults(rp, requestDefaults);
     return rp;
   }
 };
+
+function addDefaults (pocket, defaults) {
+  for (var k in defaults) {
+    // add the default
+    pocket.default(k, defaults[k]);
+    // store each defaults with a prefix so they can be used by overrides
+    pocket.default('default' + k, defaults[k]);
+  }
+}

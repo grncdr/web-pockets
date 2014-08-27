@@ -1,7 +1,6 @@
 var bops = require('bops');
 var Promise = require('lie');
 var STATUS_CODES = require('http').STATUS_CODES;
-var collectStream = require('lie-denodify')(require('collect-stream'));
 
 exports.responder = K(responder);
 function responder (result, response) {
@@ -73,31 +72,7 @@ function errorHandler (error, response) {
   console.error('Uncaught error:', error.stack);
 }
 
-exports.requestBody = function (request) {
-  return collectStream(request);
-};
-
-exports.result = getResult;
-function getResult (matchedRoute) {
-  var requestPocket = this;
-
-  return (function tryNextMatch (match) {
-    if (!match) {
-      return { statusCode: 404, body: 'Not Found' };
-    }
-    var matchPocket = requestPocket.pocket();
-    matchPocket.value('match', match);
-    return matchPocket.run(match.fn).then(function (result) {
-      // try next match if nothing was returned.
-      return result || tryNextMatch(match.next());
-    });
-  })(matchedRoute);
-}
-
-exports.matchedRoute = getMatchedRoute;
-function getMatchedRoute (router, request) {
-  return router.match(request.method + ' ' + request.url) || false;
-}
+exports.cookieKeys = null;
 
 function isStream (thing) {
   return thing && typeof thing.pipe === 'function';
