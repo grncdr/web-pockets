@@ -29,7 +29,7 @@ function createHitCounter () {
 You can define values that are computed per-request:
 
 ```javascript
-app.requestValue('acceptsJson', requestAcceptsJSON);
+app.request.value('acceptsJson', requestAcceptsJSON);
 function requestAcceptsJSON (request) {
   return /json/.test(request.headers.accept);
 }
@@ -55,14 +55,13 @@ app.route('GET *', function (request, hits, acceptsJSON) {
 
 ```ocaml
 Handler = Pocket & ((Request, Response) => void) & {
-  requestValue: (Object) => Handler
-  requestValue: (String, Any) => Handler
+  request: PocketProxy
 }
 
 module.exports =: (Pocket?) => Handler
 ```
 
-The default export takes an optional "root" pocket and returns a handler function that is also a pocket. Values that you put into the pocket using `.value` are shared across requests, while values added with `.requestValue` will be lazily computed for each request. 
+The default export takes an optional "root" pocket and returns a handler function that is also a pocket. The handler function has a property named `request` that is a _proxy_ for the pocket created on each request.
 
 See also: [API docs for `Pocket`][pockets]
 
