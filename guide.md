@@ -189,3 +189,5 @@ app.value('responder', function () {
   }
 });
 ```
+
+[pockets]: https://github.com/grncdr/js-pockets
