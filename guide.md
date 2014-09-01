@@ -156,7 +156,7 @@ app.route('PUT /*', function (match, hitCounter) {
 });
 ```
 
-The route matching is provided by [`routes`][routes], and the resulting `match` object will be made available to the pocket that runs the route callback.
+The route matching is provided by [`routes`][routes], and defines a `match` value in the request pocket. The route callbacks can of course depend on any other pocket values.
 
 As seen above, routes patterns in `web-pockets` also include an HTTP verb. This can also be parameterized:
 
@@ -169,7 +169,6 @@ handler.addRoute(':method /*', function (match) {
 })
 ```
 
-[routes]: https://github.com/aaronblohowiak/routes.js
 
 ## Example 5 - Augmenting defaults
 
@@ -191,3 +190,4 @@ app.value('responder', function () {
 ```
 
 [pockets]: https://github.com/grncdr/js-pockets
+[routes]: https://github.com/aaronblohowiak/routes.js
