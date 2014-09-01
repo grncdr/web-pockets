@@ -9,9 +9,7 @@ module.exports = createHandler;
 
 function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
-  addDefaults(appPocket, appDefaults);
-
-  var deferredRequestPocketCalls = [];
+  for (var k in appDefaults) appPocket.value(k, requestDefaults[k]);
 
   function handler (request, response) {
 
@@ -81,32 +79,26 @@ function createHandler (root) {
 
   function createRequestPocket (request, response) {
     var rp = appPocket.pocket().value('request', request).value('response', response);
+    for (var k in requestDefaults) rp.value(k, requestDefaults[k]);
     handler.request.apply(rp);
-    addDefaults(rp, requestDefaults);
     return rp;
-  }
-}
-
-function addDefaults (pocket, defaults) {
-  for (var k in defaults) {
-    // add the default
-    pocket.default(k, defaults[k]);
-    // store each defaults with a prefix so they can be used by overrides
-    pocket.default('default' + k, defaults[k]);
   }
 }
 
 function deferredProxy (proto) {
   var calls = [];
-  var proxy = Object.keys(proto).reduce(function (proxy, method) {
-    if (typeof proto[method] !== 'function') {
-      return;
-    }
+  var proxy = {};
+
+  var methods = Object.keys(proto).filter(function (method) {
+    return typeof proto[method] !== 'function';
+  });
+
+  methods.forEach(function (method) {
     proxy[method] = function () {
       calls.push([method, arguments]);
+      return this;
     };
-    return proxy;
-  }, {});
+  });
 
   proxy.apply = function (target) {
     for (var i = 0, len = calls.length; i < len; i++) {
