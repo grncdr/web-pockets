@@ -11,7 +11,7 @@ function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
   addDefaults(appPocket, appDefaults);
 
-  var perRequestValues = [];
+  var deferredRequestPocketCalls = [];
 
   function handler (request, response) {
 
@@ -28,20 +28,15 @@ function createHandler (root) {
   }
 
   // Proxy all the pocket methods from the handler to the inner pocket
-  Object.keys(appPocket).filter(function (k) {
-    return typeof appPocket[k] === 'function';
-  }).forEach(function (method) {
-    handler[method] = function () {
-      appPocket[method].apply(appPocket, arguments);
-      return handler;
-    };
-  });
+  for (var method in appPocket) {
+    if (typeof appPocket[method] === 'function') {
+      handler[method] = appPocket[method];
+    }
+  }
 
-  // save a deferred call to requestPocket.value
-  handler.requestValue = function () {
-    perRequestValues.push(slice(arguments));
-    return handler;
-  };
+  // a proxy that will save deferred calls to pocket methods, we apply these to
+  // each request pocket on creation.
+  handler.request = deferredProxy(appPocket);
 
   var router = new Routes();
   handler.value('router', router);
@@ -85,13 +80,8 @@ function createHandler (root) {
   return handler;
 
   function createRequestPocket (request, response) {
-    var rp = appPocket.pocket();
-    perRequestValues.forEach(function (args) {
-      rp.value.apply(rp, args);
-    });
-    rp.value('request', request)
-      .value('response', response);
-
+    var rp = appPocket.pocket().value('request', request).value('response', response);
+    handler.request.apply(rp);
     addDefaults(rp, requestDefaults);
     return rp;
   }
@@ -104,4 +94,24 @@ function addDefaults (pocket, defaults) {
     // store each defaults with a prefix so they can be used by overrides
     pocket.default('default' + k, defaults[k]);
   }
+}
+
+function deferredProxy (proto, calls) {
+  var proxy = Object.keys(proto).reduce(function (proxy, method) {
+    if (typeof proto[method] !== 'function') {
+      return;
+    }
+    proxy[method] = function () {
+      calls.push([method, arguments]);
+    };
+  }, {});
+
+  proxy.apply = function (target) {
+    for (var i = 0, len = calls.length; i < len; i++) {
+      target[calls[i][0]].apply(target, calls[i][1]);
+    }
+    return results;
+  };
+
+  return proxy;
 }
