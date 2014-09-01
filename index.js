@@ -112,7 +112,6 @@ function deferredProxy (proto) {
     for (var i = 0, len = calls.length; i < len; i++) {
       target[calls[i][0]].apply(target, calls[i][1]);
     }
-    return results;
   };
 
   return proxy;
