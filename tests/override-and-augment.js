@@ -17,7 +17,7 @@ test(function overrideResponder (assert, app, request) {
 });
 
 test(function overrideResult (assert, app, request) {
-  app.requestValue('result', {
+  app.request.value('result', {
     headers: { 'X-Lol': 'huehuehue' },
     body: 'Funny joke'
   });
@@ -32,7 +32,7 @@ test(function overrideResult (assert, app, request) {
 });
 
 test(function augmentResult (assert, app, request) {
-  app.requestValue('result', function (defaultResult) {
+  app.request.value('result', function (defaultResult) {
     defaultResult.headers['X-Neat'] = 'Coool';
     return defaultResult;
   });
