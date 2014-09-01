@@ -9,8 +9,6 @@
   "author": "Stephen Sugden <me@stephensugden.com>",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "concat-stream": "~1.4.5",
-    "msgpack": "~0.2.3",
     "questor": "^1.0.0-alpha.3"
   },
   "dependencies": {
