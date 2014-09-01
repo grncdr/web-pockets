@@ -105,7 +105,7 @@ function deferredProxy (proto) {
     proxy[method] = function () {
       calls.push([method, arguments]);
     };
-    return {};
+    return proxy;
   }, {});
 
   proxy.apply = function (target) {
