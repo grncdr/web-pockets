@@ -96,7 +96,8 @@ function addDefaults (pocket, defaults) {
   }
 }
 
-function deferredProxy (proto, calls) {
+function deferredProxy (proto) {
+  var calls = [];
   var proxy = Object.keys(proto).reduce(function (proxy, method) {
     if (typeof proto[method] !== 'function') {
       return;
@@ -104,6 +105,7 @@ function deferredProxy (proto, calls) {
     proxy[method] = function () {
       calls.push([method, arguments]);
     };
+    return {};
   }, {});
 
   proxy.apply = function (target) {
