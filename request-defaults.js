@@ -31,4 +31,3 @@ exports.cookies = loadCookies;
 function loadCookies (request, response, cookieKeys) {
   return new Cookies(request, response, cookieKeys);
 }
-
