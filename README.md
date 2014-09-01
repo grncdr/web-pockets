@@ -4,7 +4,7 @@ Build loosely-coupled web-apps without caring about ordering.
 
 ## Synopsis
 
-_(There is also a [more thorough guide](guide.md), and an an explanation [why `web-pockets` is better than other frameworks](why.md).)_
+_(There is also a [more thorough guide](guide.md), and an explanation [why `web-pockets` is better than other frameworks](why.md).)_
 
 Create a handler function named `app`:
 
