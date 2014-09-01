@@ -63,10 +63,10 @@ module.exports =: (Pocket?) => Handler
 
 The default export takes an optional "root" pocket and returns a handler function that is also a pocket. The handler function has a property named `request` that is a _deferred proxy_ for the child pocket implicitly created for each request. What this means is that values that should be computed once for the entire app are defined on the handler using e.g. `app.value(name, valOrFunction)`, and values that should be computed once per-request are defined using `app.request.value(name, valOrFunction)`.
 
-See also: [API docs for `Pocket`][pockets]
+See also: [API docs for `Pocket`][pockets-api]
 
 ## License
 
 MIT
 
-[pockets]: https://github.com/grncdr/js-pockets/API.md
+[pockets-api]: https://github.com/grncdr/js-pockets/blob/master/API.md
