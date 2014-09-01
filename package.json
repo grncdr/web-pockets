@@ -11,7 +11,6 @@
   "devDependencies": {
     "concat-stream": "~1.4.5",
     "msgpack": "~0.2.3",
-    "pockets": "^0.2.0",
     "questor": "^1.0.0-alpha.3"
   },
   "dependencies": {
@@ -21,6 +20,7 @@
     "cookies": "^0.5.0",
     "lie": "^2.7.7",
     "lie-denodify": "^0.3.0",
+    "pockets": "^0.3.0",
     "routes": "~1.1.0",
     "xtend": "~3.0.0"
   }
