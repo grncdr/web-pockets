@@ -5,6 +5,10 @@ exports.requestBody = function (request) {
   return collectStream(request);
 };
 
+exports.parsedBody = function (requestBody) {
+  return JSON.parse(requestBody);
+}
+
 exports.result = getResult;
 function getResult (matchedRoute) {
   var requestPocket = this;
