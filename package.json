@@ -11,6 +11,10 @@
   "devDependencies": {
     "questor": "^1.0.0-alpha.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/grncdr/web-pockets"
+  },
   "dependencies": {
     "bops": "~0.1.1",
     "collect-stream": "^1.0.0",
