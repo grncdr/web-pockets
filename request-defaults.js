@@ -1,5 +1,6 @@
 var collectStream = require('lie-denodify')(require('collect-stream'));
 var Cookies = require('cookies');
+var resumer = require('resumer');
 
 exports.requestBody = function (request) {
   // this seems so wrong
@@ -8,7 +9,7 @@ exports.requestBody = function (request) {
 
 exports.parsedBody = function (requestBody) {
   return JSON.parse(requestBody);
-}
+};
 
 exports.result = getResult;
 function getResult (matchedRoute) {
