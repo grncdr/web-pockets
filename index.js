@@ -4,6 +4,7 @@ var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
 var slice = Function.prototype.call.bind(Array.prototype.slice);
+var testApp = require('./test');
 
 module.exports = createHandler;
 
@@ -32,6 +33,8 @@ function createHandler (root) {
       handler[method] = appPocket[method];
     }
   }
+
+  handler.test = testApp.bind(null, handler);
 
   // a proxy that will save deferred calls to pocket methods, we apply these to
   // each request pocket on creation.

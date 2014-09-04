@@ -2,14 +2,19 @@ var createApp = require('./');
 var questor = require('questor');
 var assert = require('assert');
 
-module.exports = function test (name, body) {
+module.exports = test;
+function test (name, body) {
+  return testApp(createApp(), name, body);
+}
+
+test.testApp = testApp;
+function testApp (app, name, body) {
   if (typeof name === 'function') {
     body = name;
     name = body.name || '<anonymous test>';
   }
   var results = [];
   var assert = scopedAssert(results);
-  var app = createApp();
 
   app.listen(0, 'localhost').on('listening', function () {
     var server = this;
@@ -48,7 +53,7 @@ module.exports = function test (name, body) {
       return questor(uri, opts);
     }
   });
-};
+}
 
 function scopedAssert (results) {
   var reporter = {
