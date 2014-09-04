@@ -1,10 +1,10 @@
 var collectStream = require('lie-denodify')(require('collect-stream'));
 var Cookies = require('cookies');
-var resumer = require('resumer');
 
 exports.requestBody = function (request) {
-  // this seems so wrong
-  return collectStream(resumer(request));
+  var body = collectStream(request);
+  request.resume();
+  return body;
 };
 
 exports.parsedBody = function (requestBody) {
