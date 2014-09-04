@@ -23,6 +23,7 @@
     "lie": "^2.7.7",
     "lie-denodify": "^0.3.0",
     "pockets": "^0.5.0",
+    "resumer": "0.0.0",
     "routes": "~1.1.0",
     "xtend": "~3.0.0"
   }

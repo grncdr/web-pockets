@@ -13,7 +13,7 @@ function createHandler (root) {
   for (var k in appDefaults) appPocket.value(k, appDefaults[k]);
 
   function handler (request, response) {
-
+    request.pause();
     var rp = createRequestPocket(request, response);
 
     rp.get('responder').then(rp.run)
