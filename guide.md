@@ -117,7 +117,7 @@ app.value('config', function (configUrl) {
 app.value('configUrl', 'http://config.internal/' + process.env.NODE_ENV + '.json');
 ```
 
-Above, the request to `configUrl` will only ever be made once. We can also define asyncrhonous values using callbacks with `nodeValue`:
+Above, the request to `configUrl` will only ever be made once. We can also define asynchronous values using callbacks with `nodeValue`:
 
 ```javascript
 app.nodeValue('database', function (config, callback) {
