@@ -35,6 +35,7 @@ function createHandler (root) {
   // a proxy that will save deferred calls to pocket methods, we apply these to
   // each request pocket on creation.
   handler.request = deferredProxy(appPocket);
+  for (var k in requestDefaults) handler.request.value(k, requestDefaults[k]);
 
   var router = new Routes();
   handler.value('router', router);
@@ -79,7 +80,6 @@ function createHandler (root) {
 
   function createRequestPocket (request, response) {
     var rp = appPocket.pocket().value('request', request).value('response', response);
-    for (var k in requestDefaults) rp.value(k, requestDefaults[k]);
     handler.request.apply(rp);
     return rp;
   }
@@ -90,7 +90,7 @@ function deferredProxy (proto) {
   var proxy = {};
 
   var methods = Object.keys(proto).filter(function (method) {
-    return typeof proto[method] !== 'function';
+    return typeof proto[method] === 'function';
   });
 
   methods.forEach(function (method) {
