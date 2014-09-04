@@ -9,7 +9,8 @@ module.exports = createHandler;
 
 function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
-  for (var k in appDefaults) appPocket.value(k, requestDefaults[k]);
+
+  for (var k in appDefaults) appPocket.value(k, appDefaults[k]);
 
   function handler (request, response) {
 
