@@ -26,7 +26,7 @@ app.request.wrap('result', function (request, result, logger) {
       return result;
     }, 
     function (error) {
-      logger.failure(request, result, new Date() - start, error);
+      logger.failure(request, error, new Date() - start);
       throw error;
     }
   );
