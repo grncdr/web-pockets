@@ -43,7 +43,17 @@ function createHandler (root) {
 
   var router = new Routes();
   handler.value('router', router);
-  handler.route = router.addRoute.bind(router);
+  handler.route = function (pattern, fn) {
+    if (pattern.indexOf('?') < 0) {
+      pattern += '?*';
+    }
+    router.addRoute(pattern, fn);
+  };
+  handler.routes = function (routes) {
+    for (var route in routes) {
+      handler.addRoute(route, routes[route]);
+    }
+  };
 
   /**
    * Injects a fake request/response pair to verify that all dependencies have
