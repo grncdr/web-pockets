@@ -1,20 +1,10 @@
 var bops = require('bops');
+var isStream = require('isa-stream').Readable;
 var Promise = require('lie');
 var STATUS_CODES = require('http').STATUS_CODES;
 
 exports.responder = K(responder);
 function responder (result, response) {
-  if (result === null || result === void(0)) {
-    result = { statusCode: 404, body: 'Not Found' };
-  }
-
-  if (typeof result !== 'object' ||
-      bops.is(result) ||
-      isStream(result) ||
-      !result.hasOwnProperty('body')) {
-    result = { body: result };
-  }
-
   var statusCode = result.statusCode || (result instanceof Error ? 500 : 200);
   var headers = result.headers || {};
   var body = result.body;
@@ -24,7 +14,7 @@ function responder (result, response) {
       headers['content-type'] = 'application/octet-stream';
     }
     if (body.length) {
-      headers['conent-length'] = body.length
+      headers['conent-length'] = body.length;
     }
     response.writeHead(statusCode, headers);
     body.pipe(response);
@@ -73,9 +63,5 @@ function errorHandler (error, response) {
 }
 
 exports.cookieKeys = null;
-
-function isStream (thing) {
-  return thing && typeof thing.pipe === 'function';
-}
 
 function K (value) { return function () { return value; }; }

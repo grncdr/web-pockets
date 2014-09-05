@@ -1,5 +1,7 @@
+var bops = require('bops');
 var collectStream = require('lie-denodify')(require('collect-stream'));
 var Cookies = require('cookies');
+var isStream = require('isa-stream').Readable;
 var querystring = require('querystring');
 
 exports.requestBody = function (request) {
@@ -14,19 +16,23 @@ exports.parsedBody = function (requestBody) {
 
 exports.result = getResult;
 function getResult (matchedRoute) {
-  var requestPocket = this;
-
-  return (function tryNextMatch (match) {
-    if (!match) {
-      return { statusCode: 404, body: 'Not Found' };
+  if (!matchedRoute) {
+    return { statusCode: 404, headers: {}, body: 'Not Found' };
+  }
+  return this.run(matchedRoute.fn).then(function (result) {
+    if (typeof result !== 'object' ||
+        bops.is(result) ||
+        isStream(result) ||
+        !result.hasOwnProperty('body'))
+    {
+      result = { body: result };
     }
-    var matchPocket = requestPocket.pocket();
-    matchPocket.value('match', match);
-    return matchPocket.run(match.fn).then(function (result) {
-      // try next match if nothing was returned.
-      return result || tryNextMatch(match.next());
-    });
-  })(matchedRoute);
+    return {
+      statusCode: result.statusCode || 200,
+      headers:    result.headers    || {},
+      body:       result.body       || ''
+    };
+  });
 }
 
 exports.matchedRoute = getMatchedRoute;
