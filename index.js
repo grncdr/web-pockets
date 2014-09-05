@@ -4,7 +4,7 @@ var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
 var slice = Function.prototype.call.bind(Array.prototype.slice);
-var testApp = require('./test');
+var testApp = require('./test').testApp;
 
 module.exports = createHandler;
 

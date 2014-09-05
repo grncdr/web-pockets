@@ -2,7 +2,7 @@ var Promise = require('lie');
 var test = require('../test');
 
 // Create an application that takes in a message and produces a result
-test(function EchoServer (assert, app, request) {
+test(function EchoServer (assert, request, app) {
   app.route(':method /*', function (request, requestBody) {
     return {
       body: {

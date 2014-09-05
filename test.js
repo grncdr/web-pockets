@@ -1,10 +1,9 @@
-var createApp = require('./');
 var questor = require('questor');
 var assert = require('assert');
 
 module.exports = test;
 function test (name, body) {
-  return testApp(createApp(), name, body);
+  return testApp(require('./')(), name, body);
 }
 
 test.testApp = testApp;
@@ -28,7 +27,7 @@ function testApp (app, name, body) {
       return Promise.all(results);
     };
 
-    body(assert, app, request).then(function () {
+    body(assert, request, app).then(function () {
       server.close();
       if (!results.length) {
         return new Error('Test contained no assertions' + name);

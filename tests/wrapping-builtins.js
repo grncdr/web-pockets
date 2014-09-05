@@ -1,6 +1,6 @@
 var test = require('../test');
 
-test(function overrideResponder (assert, app, request) {
+test(function overrideResponder (assert, request, app) {
   app.wrap('responder', function (responder) {
     return function (response) {
       response.end('Hello World');
@@ -15,7 +15,7 @@ test(function overrideResponder (assert, app, request) {
   });
 });
 
-test(function overrideResult (assert, app, request) {
+test(function overrideResult (assert, request, app) {
   app.request.wrap('result', function (result) {
     return {
       headers: { 'X-Lol': 'huehuehue' },
@@ -32,7 +32,7 @@ test(function overrideResult (assert, app, request) {
   });
 });
 
-test(function augmentResult (assert, app, request) {
+test(function augmentResult (assert, request, app) {
   app.request.wrap('result', function (result) {
     return result().then(function (result) {
       result.headers['X-Neat'] = 'Coool';
