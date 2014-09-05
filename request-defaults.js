@@ -1,5 +1,6 @@
 var collectStream = require('lie-denodify')(require('collect-stream'));
 var Cookies = require('cookies');
+var querystring = require('querystring');
 
 exports.requestBody = function (request) {
   var body = collectStream(request);
@@ -31,6 +32,11 @@ function getResult (matchedRoute) {
 exports.matchedRoute = getMatchedRoute;
 function getMatchedRoute (router, request) {
   return router.match(request.method + ' ' + request.url) || false;
+}
+
+exports.queryParams = getQueryParams;
+function getQueryParams (request) {
+  return querystring.parse(request.url.split('?').slice(1).join('?'));
 }
 
 exports.cookies = loadCookies;
