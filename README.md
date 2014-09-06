@@ -69,4 +69,5 @@ See also: [API docs for `Pocket`][pockets-api]
 
 MIT
 
+[pockets]: https://github.com/grncdr/js-pockets
 [pockets-api]: https://github.com/grncdr/js-pockets/blob/master/API.md
