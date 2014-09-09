@@ -51,7 +51,7 @@ function createHandler (root) {
   };
   handler.routes = function (routes) {
     for (var route in routes) {
-      handler.addRoute(route, routes[route]);
+      handler.route(route, routes[route]);
     }
   };
 
