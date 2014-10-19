@@ -6,7 +6,7 @@
 
 ### `responder`
 
-The default `responder` relies on the per-request `result`, rendering it as either plain-text, a binary stream, or JSON. See the docs for [`result`](#-result-) for more details on the different ways the result can be represented.
+The default `responder` relies on the per-request `result`, rendering it as either plain-text, a binary stream, or JSON. See the docs for [`result`](#result) for more details on the different ways the result can be represented.
 
 ### `errorHandler`
 
