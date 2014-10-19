@@ -42,7 +42,7 @@ app.route('GET /hello-header', function () {
 
 The `body` property can be a string, buffer, stream, or object, and `web-pockets` will do the _Right Thing_:
 
- - If the result is a stream it will be piped into `response`
+ - If the result is a stream it will be piped into `response`.
  - If it's a string or buffer the `Content-Length` header will be set before calling `response.end(result.body)`.
  - All other objects will be `JSON.stringify`ed, and both the `Content-Type` and `Content-Length` headers will be set.
 
