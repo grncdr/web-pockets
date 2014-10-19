@@ -4,8 +4,6 @@ Build loosely-coupled web-apps without caring about ordering.
 
 ## Synopsis
 
-_(There is also a [more thorough guide](guide.md), a [reference for all the built-in behaviours](built-in-values.md), and an explanation [why `web-pockets` is better than other frameworks](why.md).)_
-
 Create a handler function named `app`:
 
 ```javascript
@@ -26,7 +24,7 @@ function createHitCounter () {
 }
 ```
 
-You can define values that are computed per-request:
+You can also define values that are computed per-request:
 
 ```javascript
 app.request.value('acceptsJson', requestAcceptsJSON);
@@ -50,6 +48,17 @@ app.route('GET *', function (request, hits, acceptsJSON) {
   return message;
 });
 ```
+
+## More Docs
+
+ * The best place to start is [the guide](guide.md).
+ * [Reference docs for all the built-in values](built-in-values.md).
+ * For those wondering "why bother?": [Why `web-pockets` is better than other frameworks](why.md).
+
+## More Examples
+
+ * [An example of per-request values](https://github.com/grncdr/web-pockets/tree/master/examples/per-request-values) lives in this repo.
+ * [feedr](https://github.com/sdepold/feedr) is a server that retrieves and normalizes RSS feeds.
 
 ## API
 
