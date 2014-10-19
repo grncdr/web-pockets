@@ -1,4 +1,4 @@
-# web-pockets
+# web-pockets [![Build Status](https://travis-ci.org/grncdr/web-pockets.svg?branch=master)](https://travis-ci.org/grncdr/web-pockets)
 
 Build loosely-coupled web-apps without caring about ordering.
 
