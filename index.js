@@ -44,9 +44,6 @@ function createHandler (root) {
   var router = new Routes();
   handler.value('router', router);
   handler.route = function (pattern, fn) {
-    if (pattern.indexOf('?') < 0) {
-      pattern += '?*';
-    }
     router.addRoute(pattern, fn);
   };
   handler.routes = function (routes) {
