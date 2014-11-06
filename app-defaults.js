@@ -2,6 +2,7 @@ var bops = require('bops');
 var isStream = require('isa-stream').Readable;
 var Promise = require('lie');
 var STATUS_CODES = require('http').STATUS_CODES;
+var wrapError = require('./wrap-error');
 
 exports.responder = K(responder);
 function responder (result, response) {
@@ -34,6 +35,7 @@ function responder (result, response) {
     response.writeHead(statusCode, headers);
     response.end(body);
   }
+
   return new Promise(function (pass, fail) {
     response.on('end', pass).on('error', fail);
   });
@@ -41,27 +43,8 @@ function responder (result, response) {
 
 exports.errorHandler = K(errorHandler);
 function errorHandler (error, response) {
-  var body;
-  if (error.toJSON) {
-    // JSONify the error and respond with that data
-    return responder(error.toJSON(), response);
-  }
-  else if (process.env.DEBUG) {
-    body = error.stack + '\n';
-  } else {
-    body = STATUS_CODES[statusCode];
-  }
-
-  var contentType = 'text/plain';
-  var statusCode = error.statusCode || 500;
-
-  // error handler failed as well
-  response.writeHead(statusCode, {
-    'Content-Type': contentType,
-    'Content-Length': body.length
-  });
-  response.end(body);
   console.error('Uncaught error:', error.stack);
+  return responder(result, response);
 }
 
 exports.cookieKeys = null;

@@ -19,11 +19,20 @@ function createHandler (root) {
 
     rp.get('responder').then(rp.run)
       .catch(function (err) {
+        // This is called when user code wrapping 'result' fails.
+        // The default 'result' provider will catch errors and transform them
         rp.value('error', err);
-        return rp.get('errorHandler').then(rp.run);
-      })
-      .catch(function (err) {
-        return defaults.errorHandler(err, response);
+        return rp.get('errorHandler').then(function (errorHandler) {
+          if (errorHandler === defaults.errorHandler) {
+            return rp.run(errorHandler);
+          } else {
+            // chain the default error handler after user error handlers
+            return rp.run(errorHandler).catch(function (error) {
+              console.error('User error handler threw while handling:', err.toString());
+              defaults.errorHandler(error, response);
+            });
+          }
+        });
       });
   }
 

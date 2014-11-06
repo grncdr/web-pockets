@@ -1,7 +1,6 @@
 var Promise = require('lie');
 var test = require('../test');
 
-// Create an application that takes in a message and produces a result
 test(function RouteMatching (assert, request, app) {
   app.routes({
     'GET /': function () {
