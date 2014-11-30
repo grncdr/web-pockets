@@ -44,7 +44,7 @@ function responder (result, response) {
 exports.errorHandler = K(errorHandler);
 function errorHandler (error, response) {
   console.error('Uncaught error:', error.stack);
-  return responder(error, response);
+  return responder(wrapError(error), response);
 }
 
 exports.cookieKeys = null;
