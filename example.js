@@ -16,6 +16,7 @@ app.route(':method /echo', function (request, requestBody) {
 });
 
 app.route('POST /eval', function (requestBody) {
+  /* jshint evil:true */
   return {body: eval(requestBody.toString()) || null};
 });
 

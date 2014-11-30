@@ -2,7 +2,6 @@ var bops = require('bops');
 var collectStream = require('lie-denodify')(require('collect-stream'));
 var Cookies = require('cookies');
 var isStream = require('isa-stream').Readable;
-var querystring = require('querystring');
 var url = require('url');
 
 var wrapError = require('./wrap-error');
@@ -38,7 +37,7 @@ function getResult (matchedRoute) {
       headers:    result.headers    || {},
       body:       result.body       || ''
     };
-  };
+  }
 }
 
 exports.matchedRoute = getMatchedRoute;

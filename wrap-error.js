@@ -2,8 +2,8 @@
 var STATUS_CODES = require('http').STATUS_CODES;
 
 /**
- * Shared logic for wrapping error instances into results. This code is use by
- * the default provider for 'result' as well as the default/fallback errorHandler
+ * Shared logic for wrapping error instances into results. This code is used by
+ * the default provider for 'result' and the default/fallback errorHandler
  */
 module.exports = function transformError (error) {
   // delegate the error if it can turn itself into an object
@@ -12,13 +12,13 @@ module.exports = function transformError (error) {
   }
 
   var statusCode = error.statusCode || 500;
-  var contentType = 'text/plain';
-  var body = (process.env.DEBUG ? error.stack : STATUS_CODES[statusCode]) + '\n';
+  var debug = Boolean(process.env.DEBUG)
+  var body = (debug ? error.stack : STATUS_CODES[statusCode]) + '\n';
 
   return {
     statusCode: statusCode,
     headers: {
-      'Content-Type': contentType,
+      'Content-Type': 'text/plain',
       'Content-Length': body.length
     },
     body: body,

@@ -1,10 +1,9 @@
 var bops = require('bops');
 var isStream = require('isa-stream').Readable;
-var Promise = require('lie');
-var STATUS_CODES = require('http').STATUS_CODES;
+var Lie = typeof Promise === 'undefined' ? require('lie') : Promise;
 var wrapError = require('./wrap-error');
 
-exports.responder = K(responder);
+exports.responder = k(responder);
 function responder (result, response) {
   var statusCode = result.statusCode || (result instanceof Error ? 500 : 200);
   var headers = result.headers || {};
@@ -36,12 +35,12 @@ function responder (result, response) {
     response.end(body);
   }
 
-  return new Promise(function (pass, fail) {
+  return new Lie(function (pass, fail) {
     response.on('end', pass).on('error', fail);
   });
 }
 
-exports.errorHandler = K(errorHandler);
+exports.errorHandler = k(errorHandler);
 function errorHandler (error, response) {
   console.error('Uncaught error:', error.stack);
   return responder(wrapError(error), response);
@@ -49,4 +48,4 @@ function errorHandler (error, response) {
 
 exports.cookieKeys = null;
 
-function K (value) { return function () { return value; }; }
+function k (value) { return function () { return value; }; }

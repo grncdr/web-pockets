@@ -3,7 +3,6 @@ var Routes = require('routes');
 var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
-var slice = Function.prototype.call.bind(Array.prototype.slice);
 var testApp = require('./test').testApp;
 
 var defaultErrorHandler = appDefaults.errorHandler();
@@ -12,8 +11,6 @@ module.exports = createHandler;
 
 function createHandler (root) {
   var appPocket = root ? root.pocket() : pocket();
-
-  for (var k in appDefaults) appPocket.value(k, appDefaults[k]);
 
   function handler (request, response) {
     request.pause();
@@ -52,7 +49,10 @@ function createHandler (root) {
   // a proxy that will save deferred calls to pocket methods, we apply these to
   // each request pocket on creation.
   handler.request = deferredProxy(appPocket);
-  for (var k in requestDefaults) handler.request.value(k, requestDefaults[k]);
+
+  var k;
+  for (k in appDefaults) appPocket.value(k, appDefaults[k]);
+  for (k in requestDefaults) handler.request.value(k, requestDefaults[k]);
 
   var router = new Routes();
   handler.value('router', router);
@@ -70,8 +70,8 @@ function createHandler (root) {
    * providers. None of the values will actually be created.
    */
   handler.verify = function () {
-    // fake a request, none of our value creation code will run, we just want to
-    // make sure that all the names we depend on will be present.
+    // fake a request, none of our value creation code will run, we just want
+    // to make sure that all the names we depend on will be present.
     var child = createRequestPocket({}, {});
     var names = child.missingNames();
 
@@ -102,8 +102,8 @@ function createHandler (root) {
 
   return handler;
 
-  function createRequestPocket (request, response) {
-    var rp = appPocket.pocket().value('request', request).value('response', response);
+  function createRequestPocket (req, res) {
+    var rp = appPocket.pocket().value('request', req).value('response', res);
     handler.request.apply(rp);
     return rp;
   }
