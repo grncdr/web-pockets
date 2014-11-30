@@ -2,6 +2,16 @@
 
 Build loosely-coupled web-apps without caring about ordering.
 
+## Table of Contents
+
+ 1. The [Synopsis](#synopsis) below is intended to give a taste of what `web-pockets` is.
+ 2. The best place to start learning more is [the guide](guide.md).
+ 3. There are [reference docs for all the built-in values](built-in-values.md).
+ 4. For those wondering "why bother?" there is [Why `web-pockets` is better than other frameworks](why.md).
+ 5. Some example code using web-pockets:
+   * [An example of per-request values](https://github.com/grncdr/web-pockets/tree/master/examples/per-request-values) lives in this repo.
+   * [feedr](https://github.com/sdepold/feedr) is a server that retrieves and normalizes RSS feeds.
+
 ## Synopsis
 
 Create a handler function named `app`:
@@ -48,17 +58,6 @@ app.route('GET *', function (request, hits, acceptsJSON) {
   return message;
 });
 ```
-
-## More Docs
-
- * The best place to start is [the guide](guide.md).
- * [Reference docs for all the built-in values](built-in-values.md).
- * For those wondering "why bother?": [Why `web-pockets` is better than other frameworks](why.md).
-
-## More Examples
-
- * [An example of per-request values](https://github.com/grncdr/web-pockets/tree/master/examples/per-request-values) lives in this repo.
- * [feedr](https://github.com/sdepold/feedr) is a server that retrieves and normalizes RSS feeds.
 
 ## API
 

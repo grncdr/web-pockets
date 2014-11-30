@@ -4,7 +4,7 @@
 
 ```javascript
 var app = require('web-pockets')();
-app.wrap('cookieKeys', function (cookieKeys) {
+app.wrap('cookieKeys', function () {
   return [
     'Oh so secret',
     'The secretest secret of them all',
@@ -13,9 +13,7 @@ app.wrap('cookieKeys', function (cookieKeys) {
 });
 ```
 
-Note that while wrapper functions can depend on any other app values, they **must** depend on the name they are wrapping (even if they ignore it as above).
-
-The original value is supplied as a promise-returning thunk, so you can control its evaluation. Here's an example of implementing request logging with `wrap`:
+Depending on the name you are wrapping supplies it as a promise-returning thunk, so you can control its evaluation. Here's an example of implementing request logging with `wrap`:
 
 ```javascript
 app.request.wrap('result', function (request, result, logger) {
