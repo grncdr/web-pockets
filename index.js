@@ -6,6 +6,8 @@ var requestDefaults = require('./request-defaults');
 var slice = Function.prototype.call.bind(Array.prototype.slice);
 var testApp = require('./test').testApp;
 
+var defaultErrorHandler = appDefaults.errorHandler();
+
 module.exports = createHandler;
 
 function createHandler (root) {
@@ -18,18 +20,20 @@ function createHandler (root) {
     var rp = createRequestPocket(request, response);
 
     rp.get('responder').then(rp.run)
-      .catch(function (err) {
+      .catch(function (responderError) {
         // This is called when user code wrapping 'result' fails.
         // The default 'result' provider will catch errors and transform them
-        rp.value('error', err);
+        rp.value('error', responderError);
+
         return rp.get('errorHandler').then(function (errorHandler) {
-          if (errorHandler === defaults.errorHandler) {
+          if (errorHandler === defaultErrorHandler) {
             return rp.run(errorHandler);
           } else {
-            // chain the default error handler after user error handlers
+            // chain the default error responder after user error responders
             return rp.run(errorHandler).catch(function (error) {
-              console.error('User error handler threw while handling:', err.toString());
-              defaults.errorHandler(error, response);
+              console.error('User error responder threw while handling:',
+                            responderError.stack);
+              return defaultErrorHandler(error, response);
             });
           }
         });
