@@ -25,7 +25,7 @@ This value is used to encrypt cookies using [`cookies`](https://npm.im/cookies).
 
 ### `request`
 
-The "raw" `IncomingMessage` from Node.
+The `IncomingMessage` object from Node.
 
 ### `response`
 
@@ -46,6 +46,7 @@ The normalized result of running the matched route handler in the per-request po
  * `statusCode` - The HTTP status code for this response.
  * `headers` - A (possibly empty) object of response headers.
  * `body` - A string, buffer, or stream representing the data that will be sent back to client.
+ * `error` (optional) - If an error was thrown while computing the result, this will be it.
 
 ### `matchedRoute`
 
