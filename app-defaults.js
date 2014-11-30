@@ -42,6 +42,7 @@ function responder (result, response) {
 exports.errorHandler = K(errorHandler);
 function errorHandler (error, response) {
   var body;
+  var statusCode = error.statusCode || 500;
   if (error.toJSON) {
     // JSONify the error and respond with that data
     return responder(error.toJSON(), response);
@@ -53,7 +54,6 @@ function errorHandler (error, response) {
   }
 
   var contentType = 'text/plain';
-  var statusCode = error.statusCode || 500;
 
   // error handler failed as well
   response.writeHead(statusCode, {
