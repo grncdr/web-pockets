@@ -4,6 +4,7 @@ var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
 var testApp = require('./test').testApp;
+var immediate = require('immediate');
 
 var defaultErrorHandler = appDefaults.errorHandler();
 
@@ -34,6 +35,10 @@ function createHandler (root) {
             });
           }
         });
+      }).catch(function (fatalError) {
+        // at this point, our error handling code has failed somehow, the only
+        // thing left to do is escape the promise closure and throw the error.
+        immediate(function () { throw fatalError; });
       });
   }
 
