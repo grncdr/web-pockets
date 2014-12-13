@@ -6,21 +6,23 @@ var STATUS_CODES = require('http').STATUS_CODES;
  * the default provider for 'result' and the default/fallback errorHandler
  */
 module.exports = function transformError (error) {
-  // delegate the error if it can turn itself into an object
+  // delegate to the error if it can turn itself into an object
   if (error.toJSON) {
     return error.toJSON();
   }
 
   var statusCode = error.statusCode || 500;
-  var debug = Boolean(process.env.DEBUG)
-  var body = (debug ? error.stack : STATUS_CODES[statusCode]) + '\n';
+  var body = error.body || (
+    (process.env.DEBUG ? error.stack : STATUS_CODES[statusCode]) + '\n'
+  );
+  var headers = error.headers || {
+    'Content-Type': 'text/plain',
+    'Content-Length': body.length
+  };
 
   return {
     statusCode: statusCode,
-    headers: {
-      'Content-Type': 'text/plain',
-      'Content-Length': body.length
-    },
+    headers: headers,
     body: body,
     error: error
   };
