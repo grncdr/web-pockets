@@ -1,5 +1,5 @@
 var http = require('http');
-var Routes = require('routes');
+var HttpHash = require('http-hash');
 var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
@@ -59,10 +59,10 @@ function createHandler (root) {
   for (k in appDefaults) appPocket.value(k, appDefaults[k]);
   for (k in requestDefaults) handler.request.value(k, requestDefaults[k]);
 
-  var router = new Routes();
+  var router = new HttpHash();
   handler.value('router', router);
   handler.route = function (pattern, fn) {
-    router.addRoute(pattern, fn);
+    router.set(pattern, fn);
   };
   handler.routes = function (routes) {
     for (var route in routes) {

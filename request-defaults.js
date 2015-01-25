@@ -22,7 +22,7 @@ function getResult (matchedRoute) {
     return { statusCode: 404, headers: {}, body: 'Not Found' };
   }
 
-  return this.run(matchedRoute.fn).then(normalizeResult, wrapError);
+  return this.run(matchedRoute.handler).then(normalizeResult, wrapError);
 
   function normalizeResult (result) {
     if (typeof result !== 'object' ||
@@ -42,7 +42,7 @@ function getResult (matchedRoute) {
 
 exports.matchedRoute = getMatchedRoute;
 function getMatchedRoute (router, request, parsedUrl) {
-  return router.match(request.method + ' ' + parsedUrl.pathname) || false;
+  return router.get(request.method + ' ' + parsedUrl.pathname) || false;
 }
 
 exports.parsedUrl = parsedUrl;
