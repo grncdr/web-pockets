@@ -3,11 +3,11 @@ var isStream = require('isa-stream').Readable;
 var Lie = typeof Promise === 'undefined' ? require('lie') : Promise;
 var wrapError = require('./wrap-error');
 
-exports.responder = k(responder);
-function responder (result, response) {
-  var statusCode = result.statusCode || (result instanceof Error ? 500 : 200);
-  var headers = result.headers || {};
-  var body = result.body;
+exports.$responder = k(responder);
+function responder ($result, $response) {
+  var statusCode = $result.statusCode || ($result instanceof Error ? 500 : 200);
+  var headers = $result.headers || {};
+  var body = $result.body;
 
   if (isStream(body)) {
     if (!headers['content-type']) {
@@ -31,21 +31,21 @@ function responder (result, response) {
       headers['content-type'] = 'text/plain';
     }
     headers['content-length'] = body.length;
-    response.writeHead(statusCode, headers);
-    response.end(body);
+    $response.writeHead(statusCode, headers);
+    $response.end(body);
   }
 
   return new Lie(function (pass, fail) {
-    response.on('end', pass).on('error', fail);
+    $response.on('end', pass).on('error', fail);
   });
 }
 
-exports.errorHandler = k(errorHandler);
-function errorHandler (error, response) {
-  console.error('Uncaught error:', error.stack);
-  return responder(wrapError(error), response);
+exports.$errorHandler = k(errorHandler);
+function errorHandler ($error, $response) {
+  console.error('Uncaught error:', $error.stack);
+  return responder(wrapError($error), $response);
 }
 
-exports.cookieKeys = null;
+exports.$cookieKeys = null;
 
 function k (value) { return function () { return value; }; }

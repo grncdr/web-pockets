@@ -6,23 +6,23 @@ var url = require('url');
 
 var wrapError = require('./wrap-error');
 
-exports.requestBody = function (request) {
-  var body = collectStream(request);
-  request.resume();
+exports.$requestBody = function ($request) {
+  var body = collectStream($request);
+  $request.resume();
   return body;
 };
 
-exports.parsedBody = function (requestBody) {
-  return JSON.parse(requestBody);
+exports.$parsedBody = function ($requestBody) {
+  return JSON.parse($requestBody);
 };
 
-exports.result = getResult;
-function getResult (matchedRoute) {
-  if (!matchedRoute) {
+exports.$result = getResult;
+function getResult ($matchedRoute) {
+  if (!$matchedRoute) {
     return { statusCode: 404, headers: {}, body: 'Not Found' };
   }
 
-  return this.run(matchedRoute.handler).then(normalizeResult, wrapError);
+  return this.run($matchedRoute.handler).then(normalizeResult, wrapError);
 
   function normalizeResult (result) {
     if (typeof result !== 'object' ||
@@ -40,22 +40,22 @@ function getResult (matchedRoute) {
   }
 }
 
-exports.matchedRoute = getMatchedRoute;
-function getMatchedRoute (router, request, parsedUrl) {
-  return router.get(request.method + ' ' + parsedUrl.pathname) || false;
+exports.$matchedRoute = getMatchedRoute;
+function getMatchedRoute ($router, $request, $parsedUrl) {
+  return $router.get($request.method + ' ' + $parsedUrl.pathname) || false;
 }
 
-exports.parsedUrl = parsedUrl;
-function parsedUrl (request) {
-  return url.parse(request.url, true);
+exports.$parsedUrl = parsedUrl;
+function parsedUrl ($request) {
+  return url.parse($request.url, true);
 }
 
-exports.queryParams = getQueryParams;
-function getQueryParams (parsedUrl) {
-  return parsedUrl.query;
+exports.$queryParams = getQueryParams;
+function getQueryParams ($parsedUrl) {
+  return $parsedUrl.query;
 }
 
-exports.cookies = loadCookies;
-function loadCookies (request, response, cookieKeys) {
-  return new Cookies(request, response, cookieKeys);
+exports.$cookies = loadCookies;
+function loadCookies ($request, $response, $cookieKeys) {
+  return new Cookies($request, $response, $cookieKeys);
 }

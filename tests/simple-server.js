@@ -1,20 +1,20 @@
-var Promise = require('lie');
+var Lie = require('lie');
 var test = require('../test');
 
 // Create an application that takes in a message and produces a result
 test(function EchoServer (assert, request, app) {
-  app.route(':method /*', function (request, requestBody) {
+  app.route(':method /*', function ($request, $requestBody) {
     return {
       body: {
-        method: request.method,
-        url: request.url,
-        headers: request.headers,
-        body: requestBody.toString()
+        method: $request.method,
+        url: $request.url,
+        headers: $request.headers,
+        body: $requestBody.toString()
       }
     };
   });
 
-  return Promise.all([
+  return Lie.all([
     request('/hallo').then(function (response) {
       assert.equal('Content-Type', response.headers['content-type'], 'application/json');
       assert.equal('Content-Length', response.headers['content-length'], response.body.length);
