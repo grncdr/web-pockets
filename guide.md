@@ -78,12 +78,12 @@ app.value('hitCounter', createCounter);
 This defines the name `hitCounter` as a lazy value. The first time a `hitCounter` is needed, `createCounter` will be called. That same counter will be returned every time a `hitCounter` is requested from then on. In order to use a `hitCounter` in a route, we simply add it as a paremeter to our route handler:
 
 ```javascript
-app.route('POST /*', function (request, hitCounter) {
-  return { body: { hits: hitCounter.inc(request.url) } };
+app.route('POST /*', function ($request, hitCounter) {
+  return { body: { hits: hitCounter.inc($request.url) } };
 })
 
-app.route('GET /*', function (request, hitCounter) {
-  return { body: { hits: hitCounter.get(request.url) } };
+app.route('GET /*', function ($request, hitCounter) {
+  return { body: { hits: hitCounter.get($request.url) } };
 });
 ```
 
@@ -92,12 +92,12 @@ Now every `POST` request will increment and return the counter for that URL, whi
 Things don't get much more complicated if our hit counter talks to a database somewhere and returns a promise:
 
 ```javascript
-app.route('POST /*', function (request, hitCounter) {
-  return hitCounter.inc(request.url).then(hitsResult);
+app.route('POST /*', function ($request, hitCounter) {
+  return hitCounter.inc($request.url).then(hitsResult);
 })
 
-app.route('GET /*', function (request, hitCounter) {
-  return hitCounter.get(request.url).then(hitsResult);
+app.route('GET /*', function ($request, hitCounter) {
+  return hitCounter.get($request.url).then(hitsResult);
 });
 
 function hitsResult (hits) {
@@ -135,13 +135,13 @@ app.route('/things', function (database) {
 
 ## Example 3 - Route parameters
 
-Route matching is provided by [`routes`][routes], and will define a `match` value you can use in route handler functions.
+Route matching is provided by [`http-hash`][http-hash], and will define a `$match` value you can use in route handler functions.
 
 ```javascript
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.route('GET /greeting/:language', function (match, greetings) {
+app.route('GET /greeting/:language', function ($match, greetings) {
   if (!translations[match.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
@@ -151,7 +151,7 @@ app.route('GET /greeting/:language', function (match, greetings) {
 
 ### Aside: verbs in routes 
 
-As you may have noticed, routes patterns in `web-pockets` include an HTTP verb. This can also be parameterized: `app.route(':method /*', function (match) { ... })`
+As you may have noticed, routes patterns in `web-pockets` include an HTTP verb. This can also be parameterized: `app.route(':method /*', function ($match) { ... })`
 
 ## Example 4 - Per-request values
 
@@ -161,14 +161,14 @@ What if we wanted to use our greeting in other route handlers? Let's add a secon
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.route('GET /greeting/:language', function (match, translations) {
+app.route('GET /greeting/:language', function ($match, translations) {
   if (!translations[match.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
   return translations[match.params.language].hello;
 });
 
-app.route('GET /time/:language', function (match, translations) {
+app.route('GET /time/:language', function ($match, translations) {
   if (!translations[match.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
@@ -185,7 +185,7 @@ While this works (modulo time localization), there's quite a bit of noise and ou
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.request.value('messages', function (match, translations) {
+app.request.value('messages', function ($match, translations) {
   if (!translations[match.params.language]) {
     var err = new Error('Unknown language');
     err.statusCode = 404;
@@ -211,10 +211,10 @@ This app is also implemented in [`examples/per-request-values`](examples/per-req
 
 Organizing your application into a serial pipeline of actions to perform on each request/response pair (the `connect`/`express` middleware approach) is tedious. You need to manage dependencies between middleware manually and there's no obvious place to store request specific data except the `request` object itself. This leads to annoying anti-patterns such as monkey-patching `request.end`, and can make it non-obvious where a given property of `request` was actually created.
 
-Instead, `web-pockets` gently encourages modelling your application as a pure function. The inputs to this function can include any number of lazily computed values in addition to the `request` and `response` objects. The code to compute each lazy value can be simplified because `pockets` will sequence arbitrarily complex trees of asynchronous dependencies for you. Finally, `web-pockets` doesn't impose any particular interface or function signature on your code, so most of your application code doesn't need to be coupled to `pockets` at all. All of this adds up to a tool that rewards you (by removing boilerplate) for writing simple, loosely-coupled components.
+Instead, `web-pockets` gently encourages modelling your application as a pure function. The inputs to this function can include any number of lazily computed values in addition to the built-in ones. The code to compute each lazy value can be simplified because `pockets` will sequence arbitrarily complex trees of asynchronous dependencies for you. Finally, `web-pockets` doesn't impose any particular interface or function signature on your code, so most of your application code doesn't need to be coupled to `pockets` at all. All of this adds up to a tool that rewards you (by removing boilerplate) for writing simple, loosely-coupled components.
 
-And that's it, you're now set to go forth and `web-pocket`! You may want to peruse the [Pockets API docs][pockets-api], and the (as-yet undocumented) [built-in per-request values](request-defaults.js). This is a young project so we are very open to feedback on the appropriate behaviour of built-in values, or if you just want to override them, see [Overriding and Wrapping](overriding-and-extending.md).
+And that's it, you're now set to go forth and `web-pocket`! You may want to peruse the [Pockets API docs][pockets-api], and the [built-in values](built-in-values.md). This is a young project so we are very open to feedback on the appropriate behaviour of built-in values, or if you just want to override them, see [Overriding and Wrapping](overriding-and-extending.md).
 
 [pockets]: https://github.com/grncdr/js-pockets
 [pockets-api]: https://github.com/grncdr/js-pockets/blob/master/API.md
-[routes]: https://github.com/aaronblohowiak/routes.js
+[http-hash]: https://github.com/Matt-Esch/http-hash

@@ -6,7 +6,7 @@ var requestDefaults = require('./request-defaults');
 var testApp = require('./test').testApp;
 var immediate = require('immediate');
 
-var defaultErrorHandler = appDefaults.errorHandler();
+var defaultErrorHandler = appDefaults.$errorHandler();
 
 module.exports = createHandler;
 
@@ -17,13 +17,13 @@ function createHandler (root) {
     request.pause();
     var rp = createRequestPocket(request, response);
 
-    rp.get('responder').then(rp.run)
+    rp.get('$responder').then(rp.run)
       .catch(function (responderError) {
         // This is called when user code wrapping 'result' fails.
         // The default 'result' provider will catch errors and transform them
-        rp.value('error', responderError);
+        rp.value('$error', responderError);
 
-        return rp.get('errorHandler').then(function (errorHandler) {
+        return rp.get('$errorHandler').then(function (errorHandler) {
           if (errorHandler === defaultErrorHandler) {
             return rp.run(errorHandler);
           } else {
@@ -60,7 +60,7 @@ function createHandler (root) {
   for (k in requestDefaults) handler.request.value(k, requestDefaults[k]);
 
   var router = new HttpHash();
-  handler.value('router', router);
+  handler.value('$router', router);
   handler.route = function (pattern, fn) {
     router.set(pattern, fn);
   };
@@ -100,7 +100,7 @@ function createHandler (root) {
 
 
   handler.onError = function (errorHandler) {
-    handler.value('errorHandler', function () {
+    handler.value('$errorHandler', function () {
       return errorHandler;
     });
   };
@@ -108,7 +108,7 @@ function createHandler (root) {
   return handler;
 
   function createRequestPocket (req, res) {
-    var rp = appPocket.pocket().value('request', req).value('response', res);
+    var rp = appPocket.pocket().value('$request', req).value('$response', res);
     handler.request.apply(rp);
     return rp;
   }

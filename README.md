@@ -38,6 +38,7 @@ You can also define values that are computed per-request:
 
 ```javascript
 app.request.value('acceptsJson', requestAcceptsJSON);
+
 function requestAcceptsJSON (request) {
   return /json/.test(request.headers.accept);
 }
@@ -46,7 +47,7 @@ function requestAcceptsJSON (request) {
 Use `app.route` to get going quickly:
 
 ```javascript
-app.route('GET *', function (request, hits, acceptsJSON) {
+app.route('GET *', function ($request, hits, acceptsJSON) {
   var count = hits[request.url] = (hits[request.url] || 0) + 1;
   if (acceptsJSON) {
     return { hits: count, url: request.url };
