@@ -8,9 +8,13 @@ test(function overrideResponder (assert, request, app) {
   });
 
   return request('/').then(function (result) {
-    // No standard headers
-    assert('No default Content-Type header', !result.headers['content-type']);
-    assert('No default Content-Length header', !result.headers['content-length']);
+    assert.isUndefined('Content-Type header', result.headers['content-type']);
+
+    // hacky detection of iojs. See https://github.com/iojs/io.js/pull/1062
+    if (process.version.slice(0, 2) !== 'v1') {
+      assert.isUndefined('Content-Length header', result.headers['content-length']);
+    }
+
     assert.equal('Custom Body', result.body, 'Hello World');
   });
 });
