@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set -e; for f in tests/*.js; do node $f; done"
+    "test": "set -e; for f in tests/*-test.js; do node $f; done"
   },
   "author": "Stephen Sugden <me@stephensugden.com>",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "questor": "^1.0.0"
+    "supertest": "^0.15.0"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
     "lie": "^2.7.7",
     "lie-denodify": "^0.3.0",
     "pockets": "^0.5.0",
-    "questor": "^1.0.0",
     "xtend": "~3.0.0"
   }
 }

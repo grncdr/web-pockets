@@ -3,7 +3,6 @@ var HttpHash = require('http-hash');
 var pocket = require('pockets');
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
-var testApp = require('./test').testApp;
 var immediate = require('immediate');
 
 var defaultErrorHandler = appDefaults.errorHandler();
@@ -48,8 +47,6 @@ function createHandler (root) {
       handler[method] = appPocket[method];
     }
   }
-
-  handler.test = testApp.bind(null, handler);
 
   // a proxy that will save deferred calls to pocket methods, we apply these to
   // each request pocket on creation.
