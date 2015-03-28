@@ -1,9 +1,10 @@
 var http = require('http');
 var HttpHash = require('http-hash');
 var pocket = require('pockets');
+var immediate = require('immediate');
+
 var appDefaults = require('./app-defaults');
 var requestDefaults = require('./request-defaults');
-var immediate = require('immediate');
 
 var defaultErrorHandler = appDefaults.errorHandler();
 
