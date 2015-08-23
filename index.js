@@ -90,10 +90,10 @@ function createHandler (root) {
    * Verifies dependencies, creates an HTTP server and
    * calls listen
    */
-  handler.listen = function (port, host) {
+  handler.listen = function (port, host, callback) {
     handler.verify();
     var server = http.createServer(handler);
-    return server.listen(port, host);
+    return server.listen(port, host, callback);
   };
 
 

@@ -22,7 +22,18 @@ var http = require('http');
 var server = http.createServer(app);
 ```
 
-You can also call `app.listen(port, interface)` to have an http server created for you. Now that we have an app, let's add a route:
+You can also call `app.listen(port, interface, callback)` to have an http server created for you:
+
+```javascript
+app.listen(8080, '0.0.0.0', function () {
+  var address = this.address();
+
+  console.log('Server is running on http://%s:%s', address.address, address.port);
+});
+
+```
+
+Now that we have an app, let's add a route:
 
 ```javascript
 app.route('GET /hello', function () { return 'Hello, world'; });
@@ -149,7 +160,7 @@ app.route('GET /greeting/:language', function (match, greetings) {
 });
 ```
 
-### Aside: verbs in routes 
+### Aside: verbs in routes
 
 As you may have noticed, routes patterns in `web-pockets` include an HTTP verb. This can also be parameterized: `app.route(':method /*', function (match) { ... })`
 
