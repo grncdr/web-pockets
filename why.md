@@ -51,8 +51,8 @@ Here's the same example with `web-pockets`:
 ```javascript
 var app = require('web-pockets')();
 app.value('sessionStore', require('./session-store'));
-app.requestValue('cookies', parseCookies);
-app.requestValue('session', loadSession);
+app.request.value('cookies', parseCookies);
+app.request.value('session', loadSession);
 
 function loadSession (sessionStore, cookies) {
   return cookies._SID && sessionStore.get(cookies._SID);
