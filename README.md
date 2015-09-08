@@ -10,7 +10,7 @@ Build loosely-coupled web-apps without caring about ordering.
  4. For those wondering "why bother?" there is [Why `web-pockets` is better than other frameworks](why.md).
  5. Some example code using web-pockets:
    * [An example of per-request values](https://github.com/grncdr/web-pockets/tree/master/examples/per-request-values) lives in this repo.
-   * [feedr](https://github.com/sdepold/feedr) is a server that retrieves and normalizes RSS feeds.
+   * [feedrapp](https://github.com/sdepold/feedrapp) is a drop-in replacement for the deprecated Google Feed API that retrieves and normalizes RSS feeds.
 
 ## Synopsis
 
