@@ -44,7 +44,7 @@ This is actually short-hand for returning an object like `{ body: 'Hello, world'
 ```javascript
 app.route('GET /hello-header', function () {
   return {
-    status: 204,
+    statusCode: 204,
     headers: { 'x-greeting': 'Hello, world' }
     body: '',
   }
@@ -146,23 +146,23 @@ app.route('/things', function (database) {
 
 ## Example 3 - Route parameters
 
-Route matching is provided by [`routes`][routes], and will define a `match` value you can use in route handler functions.
+Route matching is provided by [`routes`][routes], and will define a `matchedRoute` value you can use in route handler functions.
 
 ```javascript
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.route('GET /greeting/:language', function (match, greetings) {
-  if (!translations[match.params.language]) {
+app.route('GET /greeting/:language', function (matchedRoute, greetings) {
+  if (!translations[matchedRoute.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
-  return translations[match.params.language].hello;
+  return translations[matchedRoute.params.language].hello;
 });
 ```
 
 ### Aside: verbs in routes
 
-As you may have noticed, routes patterns in `web-pockets` include an HTTP verb. This can also be parameterized: `app.route(':method /*', function (match) { ... })`
+As you may have noticed, routes patterns in `web-pockets` include an HTTP verb. This can also be parameterized: `app.route(':method /*', function (matchedRoute) { ... })`
 
 ## Example 4 - Per-request values
 
@@ -172,19 +172,19 @@ What if we wanted to use our greeting in other route handlers? Let's add a secon
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.route('GET /greeting/:language', function (match, translations) {
-  if (!translations[match.params.language]) {
+app.route('GET /greeting/:language', function (matchedRoute, translations) {
+  if (!translations[matchedRoute.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
-  return translations[match.params.language].hello;
+  return translations[matchedRoute.params.language].hello;
 });
 
-app.route('GET /time/:language', function (match, translations) {
-  if (!translations[match.params.language]) {
+app.route('GET /time/:language', function (matchedRoute, translations) {
+  if (!translations[matchedRoute.params.language]) {
     return { statusCode: 404, body: 'Unknown language' };
   }
-  var greeting = translations[match.params.language].hello;
-  var timeFormatString = translations[match.params.language].theTime;
+  var greeting = translations[matchedRoute.params.language].hello;
+  var timeFormatString = translations[matchedRoute.params.language].theTime;
   var time = timeFormatString.replace('{time}', new Date());
   return greeting + '. ' + time + '.';
 });
@@ -196,13 +196,13 @@ While this works (modulo time localization), there's quite a bit of noise and ou
 var app = createHandler();
 app.value('translations', require('./examples/per-request-values/translations'));
 
-app.request.value('messages', function (match, translations) {
-  if (!translations[match.params.language]) {
+app.request.value('messages', function (matchedRoute, translations) {
+  if (!translations[matchedRoute.params.language]) {
     var err = new Error('Unknown language');
     err.statusCode = 404;
     throw err;
   }
-  return translations[match.params.language];
+  return translations[matchedRoute.params.language];
 });
 
 app.route('GET /greeting/:language', function (messages) {
@@ -224,7 +224,7 @@ Organizing your application into a serial pipeline of actions to perform on each
 
 Instead, `web-pockets` gently encourages modelling your application as a pure function. The inputs to this function can include any number of lazily computed values in addition to the `request` and `response` objects. The code to compute each lazy value can be simplified because `pockets` will sequence arbitrarily complex trees of asynchronous dependencies for you. Finally, `web-pockets` doesn't impose any particular interface or function signature on your code, so most of your application code doesn't need to be coupled to `pockets` at all. All of this adds up to a tool that rewards you (by removing boilerplate) for writing simple, loosely-coupled components.
 
-And that's it, you're now set to go forth and `web-pocket`! You may want to peruse the [Pockets API docs][pockets-api], and the (as-yet undocumented) [built-in per-request values](request-defaults.js). This is a young project so we are very open to feedback on the appropriate behaviour of built-in values, or if you just want to override them, see [Overriding and Wrapping](overriding-and-extending.md).
+And that's it, you're now set to go forth and `web-pocket`! You may want to peruse the [Pockets API docs][pockets-api], and the [built-in per-request values](./built-in-values.md). This is a young project so we are very open to feedback on the appropriate behaviour of built-in values, or if you just want to override them, see [Overriding and Wrapping](overriding-and-extending.md).
 
 [pockets]: https://github.com/grncdr/js-pockets
 [pockets-api]: https://github.com/grncdr/js-pockets/blob/master/API.md
